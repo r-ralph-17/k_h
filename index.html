@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Charité - Application Chrétienne</title>
+  <style>
+    :root {
+      --primary-color: #4a6fa5;
+      --secondary-color: #166088;
+      --accent-color: #4fc3f7;
+      --light-color: #f8f9fa;
+      --dark-color: #343a40;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0; padding: 0;
+      background-color: var(--light-color);
+      color: var(--dark-color);
+    }
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    nav {
+      display: flex;
+      justify-content: space-around;
+      background-color: var(--secondary-color);
+      padding: 0.5rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    nav a:hover, nav a:focus {
+      background-color: var(--accent-color);
+      outline: none;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    .verse-of-the-day {
+      background-color: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      text-align: center;
+      border-left: 5px solid var(--accent-color);
+    }
+    .verse-text {
+      font-size: 1.2rem;
+      font-style: italic;
+      margin-bottom: 0.5rem;
+    }
+    .verse-ref {
+      font-weight: bold;
+      color: var(--secondary-color);
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .feature-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      transition: transform 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+    .feature-card h3 {
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--accent-color);
+      padding-bottom: 0.5rem;
+    }
+    footer {
+      background-color: var(--dark-color);
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+    #admin-form {
+      background: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      max-width: 600px;
+      margin: 2rem auto;
+      display: none;
+    }
+    #admin-form input, #admin-form textarea {
+      width: 100%;
+      margin-bottom: 0.8rem;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+    }
+    #admin-form button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #admin-form button:hover, #admin-form button:focus {
+      background-color: var(--accent-color);
+      outline: none;
+    }
+    #show-admin-btn {
+      display: block;
+      margin: 2rem auto 1rem;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      background-color: var(--secondary-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+      max-width: 200px;
+    }
+    #show-admin-btn:hover, #show-admin-btn:focus {
+      background-color: var(--accent-color);
+      outline: none;
+    }
+    /* Style pour l'image Bible ouverte */
+    .bible-image-container {
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+    .bible-image-container img {
+      max-width: 300px;
+      width: 80%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Charité</h1>
+    <p>Votre compagnon spirituel quotidien</p>
+  </header>
+
+  <nav>
+    <a href="#accueil">Accueil</a>
+    <a href="#mediations">Méditations</a>
+    <a href="#cantiques">Cantiques</a>
+    <a href="#partage">Partage</a>
+  </nav>
+
+  <div class="container">
+    <section id="accueil">
+      <!-- Image Bible ouverte -->
+      <div class="bible-image-container">
+        <img src="amen.jpg" alt="Bible ouverte" />
+      </div>
+
+      <div id="verse-du-jour" class="verse-of-the-day"></div>
+
+      <h2>Versets précédents</h2>
+      <div id="anciens-versets"></div>
+
+      <button id="show-admin-btn" aria-expanded="false" aria-controls="admin-form">Ajouter un verset (admin)</button>
+
+      <form id="admin-form" aria-label="Formulaire d'ajout de verset et audio">
+        <input type="password" id="admin-password" placeholder="Mot de passe admin" required aria-required="true" />
+        <textarea id="new-verse" placeholder="Texte du verset" required aria-required="true"></textarea>
+        <input type="text" id="new-reference" placeholder="Référence (ex: Jean 3:16)" required aria-required="true" />
+        <input type="text" id="new-audio" placeholder="URL ou chemin du fichier audio" required aria-required="true" />
+        <input type="date" id="new-date" required aria-required="true" />
+        <button type="submit">Ajouter le verset</button>
+      </form>
+
+      <div class="features">
+        <div class="feature-card">
+          <h3>Bible Complète</h3>
+          <p>Accédez à toute la Bible en plusieurs versions et langues. Recherchez par livre, chapitre ou mot-clé.</p>
+          <ul>
+            <li><a href="https://www.bible.com/fr/bible/93/GEN.1.LSG" target="_blank" rel="noopener noreferrer">Lire la Bible Louis Segond (YouVersion)</a></li>
+            <li><a href="https://www.biblegateway.com/versions/Louis-Segond-Version-LSG-Bible/" target="_blank" rel="noopener noreferrer">Lire la Bible sur Bible Gateway</a></li>
+          </ul>
+        </div>
+
+        <div class="feature-card">
+          <h3>Plans de Lecture</h3>
+          <p>Suivez des plans de lecture biblique thématiques ou chronologiques pour grandir spirituellement.</p>
+        </div>
+
+        <div class="feature-card">
+          <h3>Méditations Quotidiennes</h3>
+          <p>Recevez chaque jour une pensée édifiante pour nourrir votre foi et votre relation avec Dieu.</p>
+          <audio src="audio_2.mp3" controls preload="metadata">Votre navigateur ne supporte pas l'audio</audio>
+        </div>
+
+        <div class="feature-card">
+          <h3>Cantiques Chrétiens</h3>
+          <p>Accédez à une collection de cantiques et chants chrétiens avec paroles et accords.</p>
+        </div>
+
+        <div class="feature-card">
+          <h3>Communauté</h3>
+          <p>Partagez vos réflexions, témoignages et priez les uns pour les autres dans un espace sécurisé.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sections cachées -->
+    <section id="bible" style="display:none;">
+      <h2>La Bible</h2>
+      <p>Contenu de la section Bible...</p>
+    </section>
+    <section id="prieres" style="display:none;">
+      <h2>Prières</h2>
+      <p>Contenu de la section Prières...</p>
+    </section>
+    <section id="mediations" style="display:none;">
+      <h2>Méditations</h2>
+      <p>Contenu de la section Méditations...</p>
+    </section>
+    <section id="cantiques" style="display:none;">
+      <h2>Cantiques</h2>
+      <p>Contenu de la section Cantiques...</p>
+    </section>
+    <section id="partage" style="display:none;">
+      <h2>Partage</h2>
+      <p>Contenu de la section Partage...</p>
+    </section>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Charité - Application Chrétienne. Tous droits réservés.</p>
+    <p>"Que la grâce du Seigneur Jésus-Christ, l'amour de Dieu, et la communion du Saint-Esprit soient avec vous tous." (2 Corinthiens 13:14)</p>
+  </footer>
+
+  <script>
+    // Mot de passe admin (à modifier selon votre choix)
+    const ADMIN_PASSWORD = "2025";
+
+    // Liste initiale des versets et audios
+    let versetsAudios = [
+      {
+        date: '2025-05-30',
+        verse: "2 Timothée 3:2 Car les hommes seront égoïstes, amis de l'argent, fanfarons, hautains, blasphémateurs, rebelles à leurs parents, ingrats, irréligieux...",
+        reference: "2 Timothée 3:2-5",
+        audio: "audio_2.mp3"
+      },
+      {
+        date: '2025-05-29',
+        verse: "Psaumes 23:1 L'Éternel est mon berger: je ne manquerai de rien.",
+        reference: "Psaumes 23:1",
+        audio: "audio_3.mp3"
+      }
+      // Ajoutez ici vos versets initiaux
+    ];
+
+    // Affiche le verset du jour et les anciens versets
+    function afficherVersets() {
+      const today = new Date().toISOString().slice(0,10);
+      const verseDuJour = versetsAudios.find(v => v.date === today);
+      const containerJour = document.getElementById('verse-du-jour');
+      const containerAnciens = document.getElementById('anciens-versets');
+
+      if(verseDuJour) {
+        containerJour.innerHTML = `
+          <h2>Verset du jour (${verseDuJour.date})</h2>
+          <p class="verse-text">"${verseDuJour.verse}"</p>
+          <p class="verse-ref">${verseDuJour.reference}</p>
+          <audio src="${verseDuJour.audio}" controls preload="metadata">
+            Votre navigateur ne supporte pas l'audio.
+          </audio>
+        `;
+      } else {
+        containerJour.innerHTML = `<p>Aucun verset disponible pour aujourd'hui.</p>`;
+      }
+
+      const anciens = versetsAudios
+        .filter(v => v.date !== today)
+        .sort((a,b) => b.date.localeCompare(a.date));
+
+      containerAnciens.innerHTML = anciens.map(v => `
+        <div class="verse-of-the-day" style="border-left-color:#ccc; margin-bottom:1rem;">
+          <p class="verse-text">"${v.verse}"</p>
+          <p class="verse-ref">${v.reference} (${v.date})</p>
+          <audio src="${v.audio}" controls preload="metadata"></audio>
+        </div>
+      `).join('');
+    }
+
+    // Navigation simple entre sections
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').substring(1);
+        document.querySelectorAll('.container > section').forEach(section => section.style.display = 'none');
+        document.getElementById(targetId).style.display = 'block';
+      });
+    });
+
+    // Afficher accueil par défaut
+    document.getElementById('accueil').style.display = 'block';
+
+    // Gestion formulaire admin
+
+    const showAdminBtn = document.getElementById('show-admin-btn');
+    const adminForm = document.getElementById('admin-form');
+
+    showAdminBtn.addEventListener('click', () => {
+      if(adminForm.style.display === 'none' || adminForm.style.display === '') {
+        adminForm.style.display = 'block';
+        showAdminBtn.setAttribute('aria-expanded', 'true');
+      } else {
+        adminForm.style.display = 'none';
+        showAdminBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    adminForm.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const passwordInput = document.getElementById('admin-password').value.trim();
+      if(passwordInput !== ADMIN_PASSWORD) {
+        alert("Mot de passe incorrect !");
+        return;
+      }
+
+      const verse = document.getElementById('new-verse').value.trim();
+      const reference = document.getElementById('new-reference').value.trim();
+      const audio = document.getElementById('new-audio').value.trim();
+      const date = document.getElementById('new-date').value;
+
+      if(!verse || !reference || !audio || !date) {
+        alert("Merci de remplir tous les champs.");
+        return;
+      }
+
+      // Vérifier si la date existe déjà
+      if(versetsAudios.some(v => v.date === date)) {
+        if(!confirm("Un verset existe déjà pour cette date. Voulez-vous le remplacer ?")) {
+          return;
+        }
+        versetsAudios = versetsAudios.filter(v => v.date !== date);
+      }
+
+      versetsAudios.push({date, verse, reference, audio});
+      afficherVersets();
+
+      // Reset formulaire
+      adminForm.reset();
+      alert("Verset ajouté avec succès !");
+    });
+
+    // Afficher les versets au chargement
+    window.onload = afficherVersets;
+  </script>
+</body>
+  </html>
+                                       
